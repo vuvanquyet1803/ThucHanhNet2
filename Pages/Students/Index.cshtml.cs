@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RazorPagesMovie.Pages_Students
 {
@@ -19,10 +20,19 @@ namespace RazorPagesMovie.Pages_Students
         }
 
         public IList<Student> Student { get;set; }
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
 
         public async Task OnGetAsync()
         {
-            Student = await _context.Student.ToListAsync();
+            // Student = await _context.Student.ToListAsync();
+
+            var student = from s in _context.Student select s;
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                student = student.Where(s => s.StudentName.Contains(SearchString));
+            }
+            Student = await student.ToListAsync();
         }
     }
 }

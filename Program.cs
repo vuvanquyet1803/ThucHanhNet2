@@ -21,6 +21,7 @@ namespace RazorPagesMovie
                 try
                 {
                     SeedData.Initialize(services);
+                    AddStudent.Initialize(services);
                 }
                 catch (Exception ex)
                 {
